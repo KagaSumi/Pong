@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro; // Remove if you're not using TextMeshPro
+using UnityEngine;
 
 public class ConsoleController : MonoBehaviour
 {
@@ -71,6 +71,24 @@ public class ConsoleController : MonoBehaviour
                 break;
             case "white":
                 Camera.main.backgroundColor = Color.white;
+                break;
+            case "reset":
+                if (GameManager.Instance != null)
+                {
+                    GameManager.Instance.ResetGame();
+                    Debug.Log("Game reset via console command.");
+                }
+                else
+                {
+                    Debug.LogWarning("GameManager instance not found!");
+                }
+                break;
+            case "exit":
+                Application.Quit();
+                break;
+
+            default:
+                Debug.LogWarning($"Unknown command: {command}");
                 break;
         }
     }

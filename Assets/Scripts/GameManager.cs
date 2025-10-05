@@ -1,6 +1,6 @@
+using TMPro; // <-- Needed for TMP
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro; // <-- Needed for TMP
 
 public class GameManager : MonoBehaviour
 {
@@ -90,13 +90,13 @@ public class GameManager : MonoBehaviour
 
         if (playerScore >= winningScore)
         {
-            Debug.Log("Player Wins the Game!");
-            EndGame("Player");
+            Debug.Log("Player 1 Wins the Game!");
+            EndGame("Player 1");
         }
         else if (aiScore >= winningScore)
         {
-            Debug.Log("AI Wins the Game!");
-            EndGame("AI");
+            Debug.Log("Player2/AI Wins the Game!");
+            EndGame(currentMode == GameModeData.Mode.PlayerVsPlayer ? "Player 2" : "AI");
         }
     }
 
@@ -118,7 +118,37 @@ public class GameManager : MonoBehaviour
         if (aiPaddle != null) aiPaddle.gameObject.SetActive(false);
 
         Debug.Log($"{winner} is the winner!");
+
     }
+    public void ResetGame()
+    {
+        Debug.Log("Resetting game and returning to Main Menu...");
+
+        // Reset scores
+        playerScore = 0;
+        aiScore = 0;
+
+        // Reset UI if needed
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: 0 - 0";
+        }
+
+        // Reactivate ball and paddles if they were disabled
+        if (ball != null) ball.gameObject.SetActive(true);
+        if (playerPaddle != null) playerPaddle.gameObject.SetActive(true);
+        if (aiPaddle != null) aiPaddle.gameObject.SetActive(true);
+
+        // Optional: reset their positions
+        ResetPaddles();
+
+        // Load the Main Menu scene
+        SceneManager.LoadScene("Main Menu");
+
+        // Resume time (in case game was paused)
+        Time.timeScale = 1f;
+    }
+
 
     private void UpdateScoreUI()
     {
